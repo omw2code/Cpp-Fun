@@ -15,39 +15,46 @@ public:
     ~Matrix();
 
     // Copy Constructor
-    Matrix(T& matrix);
+    Matrix(Matrix<T>& matrix);
 
     // Move Constructor
-    Matrix(T &&matrix);
+    Matrix(Matrix<T> &&matrix);
 
     // Assignment operator
-    Matrix operator=(Matrix<T> &matrix);
+    Matrix<T> operator=(Matrix<T> &matrix);
 
     Matrix(std::initializer_list<T> &list);
 
+/// Accessor operators
+public:
+    T operator[](int i);
+
+/// Arithmetic operators
 public:
     // Needs to return a Matrix copy
-    Matrix operator+ (Matrix<T> &right);
+    Matrix<T> operator+ (Matrix<T> &right);
 
     // Needs to return a Matrix copy
-    Matrix operator- (T &right);
-
-    // Needs to return a Matrix copy
-    Matrix operator* (Matrix<T> &right);
-
-    bool operator== (T &right); 
-
-    bool operator< (T &right);
-
-    bool operator> (T &right);
-
-    bool operator<= (T &right);
-
-    bool operator>= (T &right);
+    Matrix<T> operator- (Matrix<T> &right);
 
     bool operator++(int) = delete;
 
     bool operator--(int) = delete;
+
+/// Comparison operators
+public:
+
+    Matrix operator* (Matrix<T> &right);
+
+    bool operator== (Matrix<T> &right); 
+
+    bool operator< (Matrix<T> &right);
+
+    bool operator> (Matrix<T> &right);
+
+    bool operator<= (Matrix<T> &right);
+
+    bool operator>= (Matrix<T> &right);
 
 private:
 
