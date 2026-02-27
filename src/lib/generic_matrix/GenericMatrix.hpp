@@ -6,24 +6,24 @@
 // This entity represents a 2D vector, we will declare and define
 // all of its valid operands
 template<typename T>
-class Matrix
+class GenericMatrix
 {
 public:
-    Matrix();
+    GenericMatrix();
 
     // Destructor
-    ~Matrix();
+    ~GenericMatrix();
 
     // Copy Constructor
-    Matrix(Matrix<T>& matrix);
+    GenericMatrix(GenericMatrix<T>& matrix);
 
     // Move Constructor
-    Matrix(Matrix<T> &&matrix);
+    GenericMatrix(GenericMatrix<T> &&matrix);
 
     // Assignment operator
-    Matrix<T> operator=(Matrix<T> &matrix);
+    GenericMatrix<T> operator=(GenericMatrix<T> &matrix);
 
-    Matrix(std::initializer_list<T> &list);
+    GenericMatrix(std::initializer_list<T> &list);
 
 /// Accessor operators
 public:
@@ -31,11 +31,11 @@ public:
 
 /// Arithmetic operators
 public:
-    // Needs to return a Matrix copy
-    Matrix<T> operator+ (Matrix<T> &right);
+    // Needs to return a GenericMatrix copy
+    GenericMatrix<T> operator+ (GenericMatrix<T> &right);
 
-    // Needs to return a Matrix copy
-    Matrix<T> operator- (Matrix<T> &right);
+    // Needs to return a GenericMatrix copy
+    GenericMatrix<T> operator- (GenericMatrix<T> &right);
 
     bool operator++(int) = delete;
 
@@ -44,17 +44,17 @@ public:
 /// Comparison operators
 public:
 
-    Matrix operator* (Matrix<T> &right);
+    GenericMatrix operator* (GenericMatrix<T> &right);
 
-    bool operator== (Matrix<T> &right); 
+    bool operator== (GenericMatrix<T> &right); 
 
-    bool operator< (Matrix<T> &right);
+    bool operator< (GenericMatrix<T> &right);
 
-    bool operator> (Matrix<T> &right);
+    bool operator> (GenericMatrix<T> &right);
 
-    bool operator<= (Matrix<T> &right);
+    bool operator<= (GenericMatrix<T> &right);
 
-    bool operator>= (Matrix<T> &right);
+    bool operator>= (GenericMatrix<T> &right);
 
 private:
 
@@ -62,6 +62,6 @@ private:
     size_t rows_;
     size_t cols_;
 };
-#include "Matrix.tpp"
+#include "GenericMatrix.tpp"
 
 #endif

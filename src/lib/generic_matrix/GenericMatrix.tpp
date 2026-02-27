@@ -1,21 +1,21 @@
 #include <type_traits>
-#include "Matrix.hpp"
+#include "GenericMatrix.hpp"
 
 template<typename T>
-Matrix<T>::Matrix()
+GenericMatrix<T>::GenericMatrix()
 {}
 
 template<typename T>
-Matrix<T>::~Matrix()
+GenericMatrix<T>::~GenericMatrix()
 {}
 
 template<typename T>
-Matrix<T>::Matrix(std::initializer_list<T> &list)
+GenericMatrix<T>::GenericMatrix(std::initializer_list<T> &list)
   : matrix_(list)
 {}
 
 template<typename T>
-Matrix<T> Matrix<T>::operator+(Matrix<T> &rhs)
+GenericMatrix<T> GenericMatrix<T>::operator+(GenericMatrix<T> &rhs)
 {
     // Ensure this and T are the same type
     if constexpr ( !std::is_same<decltype(this), decltype(rhs)>::type )
@@ -29,7 +29,7 @@ Matrix<T> Matrix<T>::operator+(Matrix<T> &rhs)
     if constexpr ( r_cols != cols_ )
         throw std::length_error("Invalid operand col size using the + operator");
 
-    Matrix<T> matrix;
+    GenericMatrix<T> matrix;
     for (int i{}; i < rows_; ++i)
     {
         for (int j{}; j < cols_; ++j)
@@ -44,10 +44,10 @@ Matrix<T> Matrix<T>::operator+(Matrix<T> &rhs)
 
 
 template<typename T>
- Matrix<T> Matrix<T>::operator*(Matrix<T> &rhs)
+ GenericMatrix<T> GenericMatrix<T>::operator*(GenericMatrix<T> &rhs)
 {
     // Start matrix multiplication
-    Matrix<T> matrix;
+    GenericMatrix<T> matrix;
     for (int i{}; i < rows_; ++i)
     {
         for(int j{}; j < cols_; ++j)

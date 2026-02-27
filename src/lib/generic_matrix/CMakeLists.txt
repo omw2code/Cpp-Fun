@@ -10,7 +10,10 @@ target_sources( generic_matrix
       generic_matrix.hpp
   )
 
-target_include_directories(generic_matrix 
+target_include_directories( generic_matrix 
   INTERFACE
-  ${CMAKE_CURRENT_SOURCE_DIR}
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:include>
   )
+
+
