@@ -9,19 +9,32 @@ template<typename T>
 class GenericMatrix
 {
 public:
+    /*
+    * Default constructor
+    */
     GenericMatrix();
 
-    // Destructor
+    /*
+    * Default destructor
+    */
     ~GenericMatrix();
 
-    // Copy Constructor
-    GenericMatrix(GenericMatrix<T>& matrix);
+    /*
+    * Copy Constructor
+    */
+    GenericMatrix(const GenericMatrix<T>& other);
 
-    // Move Constructor
-    GenericMatrix(GenericMatrix<T> &&matrix);
+    /*
+    * Move Constructor
+    */
+    GenericMatrix(GenericMatrix<T> &&matrix) noexcept;
 
-    // Assignment operator
-    GenericMatrix<T> operator=(GenericMatrix<T> &matrix);
+    GenericMatrix<T>& operator=(GenericMatrix<T> &&other) noexcept;
+
+    /*
+    * Assignment operator
+    */
+    GenericMatrix<T> operator=(GenericMatrix<T> &other);
 
     GenericMatrix(std::initializer_list<T> &list);
 
