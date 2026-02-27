@@ -1,15 +1,12 @@
-#include <type_traits>
-#include "GenericMatrix.hpp"
-
 template<typename T>
 GenericMatrix<T>::GenericMatrix()
 {}
 
 template<typename T>
 GenericMatrix<T>::GenericMatrix(const GenericMatrix &other)
-    : rows_(std::exchange(matrix.rows_)
-    : cols_(matrix.cols_)
-    : matrix_(other.matrix_)
+    : rows_(matrix_.rows_)
+    , cols_(matrix_.cols_)
+    , matrix_(other.matrix_)
 {}
 
 template<typename T>
@@ -19,16 +16,34 @@ GenericMatrix<T>::GenericMatrix(GenericMatrix &&other) noexcept
     , matrix_(std::exchange(other.matrix_, {}))
 {}
 
+//template<typename T>
+//GenericMatrix
+
 template<typename T>
-GenericMatrix
+GenericMatrix<T>::GenericMatrix(const std::initializer_list<std::initializer_list<T>> &list)
+  : rows_{list.size()}
+{
+    // Check to make sure cols and rows are equal
+    cols_ = rows_ > 0 ? list.begin()->size() : 0;
+    for (const auto &inner : list)
+    {
+        if (inner.size() != cols_)
+            throw std::runtime_error("Unequal row and column size");
+    }
+    
+    // copy over the data
+    matrix_.resize(rows_, std::vector<T>(cols_, 0));
+    int i{};
+    for (const auto &inner : list)
+    {
+        std::copy(inner.begin(), inner.end(), matrix_[i].begin());
+        ++i;
+    }
+
+}
 
 template<typename T>
 GenericMatrix<T>::~GenericMatrix()
-{}
-
-template<typename T>
-GenericMatrix<T>::GenericMatrix(std::initializer_list<T> &list)
-  : matrix_(list)
 {}
 
 template<typename T>

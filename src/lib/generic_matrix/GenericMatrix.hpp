@@ -2,6 +2,7 @@
 #define OVERLOADED_OPPS_HPP
 
 #include <vector>
+#include <type_traits>
 
 // This entity represents a 2D vector, we will declare and define
 // all of its valid operands
@@ -36,7 +37,7 @@ public:
     */
     GenericMatrix<T> operator=(GenericMatrix<T> &other);
 
-    GenericMatrix(std::initializer_list<T> &list);
+    GenericMatrix(const std::initializer_list<std::initializer_list<T>> &list);
 
 /// Accessor operators
 public:
