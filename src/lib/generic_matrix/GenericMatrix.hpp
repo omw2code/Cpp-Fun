@@ -4,8 +4,8 @@
 #include <vector>
 #include <type_traits>
 
-// This entity represents a 2D vector, we will declare and define
-// all of its valid operands
+// This entity represents a 2D vector with declared 
+// and defined operators
 template<typename T>
 class GenericMatrix
 {
@@ -30,52 +30,120 @@ public:
     */
     GenericMatrix(GenericMatrix<T> &&matrix) noexcept;
 
-    GenericMatrix<T>& operator=(GenericMatrix<T> &&other) noexcept;
+    /*
+    * Move assignment 
+    */
+    GenericMatrix<T>&& operator=(GenericMatrix<T> &&other) noexcept;
 
     /*
     * Assignment operator
     */
     GenericMatrix<T> operator=(GenericMatrix<T> &other);
 
+    /*
+    * Initializer List Constructor
+    */
     GenericMatrix(const std::initializer_list<std::initializer_list<T>> &list);
+    
+    size_t getRows();
 
+    size_t getCols();
+
+    bool empty();
 /// Accessor operators
 public:
     T operator[](int i);
 
 /// Arithmetic operators
 public:
-    // Needs to return a GenericMatrix copy
-    GenericMatrix<T> operator+ (GenericMatrix<T> &right);
+    /*
+    * Addition operator 
+    */
+    GenericMatrix<T> operator+ (GenericMatrix<T> &other);
 
-    // Needs to return a GenericMatrix copy
-    GenericMatrix<T> operator- (GenericMatrix<T> &right);
+    /*
+    * Subtraction operator
+    */
+    GenericMatrix<T> operator- (GenericMatrix<T> &other);
 
-    bool operator++(int) = delete;
+    /*
+    * Multiplication operator
+    */
+    GenericMatrix<T> operator* (GenericMatrix<T> &other);
+    
+    /*
+    * Division operator 
+    */
+    GenericMatrix<T> operator/ (GenericMatrix<T> &other);
 
-    bool operator--(int) = delete;
+    /*
+    * Addition assignemnt operator
+    */
+    void operator+= (GenericMatrix<T> &other);
+
+    /*
+    * Minus assignment operator
+    */
+    void operator-= (GenericMatrix<T> &other);
+
+    /*
+    * Multiplication assignemnt operator
+    */
+    void operator *= (GenericMatrix<T> &other);
+
+    /*
+    * Division assignment operator
+    */
+    void operator /= (GenericMatrix<T> &other);
+
+    void operator++ (int) = delete;
+    void operator-- (int) = delete;
 
 /// Comparison operators
 public:
 
-    GenericMatrix operator* (GenericMatrix<T> &right);
+    /*
+    * Equality operator
+    */
+    bool operator== (GenericMatrix<T> &other); 
 
-    bool operator== (GenericMatrix<T> &right); 
+    /*
+    * Not equal operator
+    */
+    bool operator!= (GenericMatrix<T> &other);
+    /*
+    * Less than operator
+    */
+    bool operator< (GenericMatrix<T> &other);
 
-    bool operator< (GenericMatrix<T> &right);
+    /*
+    * Greater than operator
+    */
+    bool operator> (GenericMatrix<T> &other);
 
-    bool operator> (GenericMatrix<T> &right);
+    /*
+    * Less than equal to operator
+    */
+    bool operator<= (GenericMatrix<T> &other);
 
-    bool operator<= (GenericMatrix<T> &right);
+    /*
+    * Greater than equal to operator
+    */
+    bool operator>= (GenericMatrix<T> &other);
 
-    bool operator>= (GenericMatrix<T> &right);
+private:
+    template<typename U>
+    bool equalLength(GenericMatrix<U> &other);
 
 private:
 
+    /// Two dementional vector
     std::vector<std::vector<T>> matrix_;
+    
+    /// Matrix attributes
     size_t rows_;
     size_t cols_;
 };
-#include "GenericMatrix.tpp"
+#include "GenericMatrix.tpp" /// Implementation
 
 #endif

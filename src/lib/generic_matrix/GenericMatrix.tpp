@@ -1,5 +1,8 @@
 template<typename T>
 GenericMatrix<T>::GenericMatrix()
+    : rows_(0)
+    , cols_(0)
+    , matrix_{}
 {}
 
 template<typename T>
@@ -16,14 +19,23 @@ GenericMatrix<T>::GenericMatrix(GenericMatrix &&other) noexcept
     , matrix_(std::exchange(other.matrix_, {}))
 {}
 
-//template<typename T>
-//GenericMatrix
+template<typename T> 
+GenericMatrix<T>&& GenericMatrix<T>::operator=(GenericMatrix<T> &&other) noexcept
+{
+    return std::move(other);
+}
 
 template<typename T>
 GenericMatrix<T>::GenericMatrix(const std::initializer_list<std::initializer_list<T>> &list)
-  : rows_{list.size()}
+  : rows_{0}
+  , cols_{0}
+  , matrix_{}
 {
+    if (list.size() <= 0)
+        return;
+
     // Check to make sure cols and rows are equal
+    rows_ = list.size();
     cols_ = rows_ > 0 ? list.begin()->size() : 0;
     for (const auto &inner : list)
     {
@@ -46,6 +58,7 @@ template<typename T>
 GenericMatrix<T>::~GenericMatrix()
 {}
 
+// TODO fix for [][] 
 template<typename T>
 T GenericMatrix<T>::operator[](int indx)
 {
@@ -72,7 +85,7 @@ GenericMatrix<T> GenericMatrix<T>::operator+(GenericMatrix<T> &rhs)
     {
         for (int j{}; j < cols_; ++j)
         {
-            matrix[i][j] = this[i][j] + rhs[i][j];
+            this[i][j] = this[i][j] + rhs[i][j];
         }
     }
     return matrix;
@@ -98,3 +111,124 @@ template<typename T>
     }
     return matrix;
 }
+
+
+template<typename T>
+bool GenericMatrix<T>::operator==(GenericMatrix<T> &other)
+{
+    if (equalLength(other))
+    {
+        for (int i{}; i < rows_; ++i)
+        {
+            for (int j{}; j < cols_; ++j)
+            {
+                if (this[i][j] != other[i][j])
+                    return false;
+            }
+        }
+    }
+    return true;
+}
+
+template<typename T>
+bool GenericMatrix<T>::operator!=(GenericMatrix<T> &other)
+{
+   if (equalLength(other))
+   {
+       for (int i{}; i < rows_; ++i)
+       {
+           for (int j{}; j < cols_; ++j)
+           {
+               if (this[i][j] != other[i][j])
+                   return true;
+           }
+       }
+   }
+   return false;
+}
+
+template<typename T>
+bool GenericMatrix<T>::operator>(GenericMatrix<T> &other)
+{
+    if (equalLength(other))
+    {
+        for (int i{}; i < rows_; ++i)
+            for(int j{}; j < cols_; ++j)
+                if ( !(this[i][j] > other[i][j]) )
+                    return false;
+    }
+    return true;
+}
+
+template<typename T>
+bool GenericMatrix<T>::operator<(GenericMatrix<T> &other)
+{
+    if (equalLength(other))
+    {
+        for (int i{}; i < rows_; ++i)
+            for (int j{}; j <cols_; ++j)
+                if ( !(this[i][j] < other[i][j]) )
+                    return false;
+    }
+    return true;
+}
+
+template<typename T>
+bool GenericMatrix<T>::operator>=(GenericMatrix<T> &other)
+{
+    if (equalLength(other))
+    {
+        for (int i{}; i < rows_; ++i)
+            for (int j{}; j < cols_; ++j)
+                if ( !(this[i][j] >= other[i][j]) )
+                    return false;
+    }
+    return true;
+}
+
+template<typename T>
+bool GenericMatrix<T>::operator<=(GenericMatrix &other)
+{
+    if (equalLength())
+    {
+        for (int i{}; i < rows_; ++i)
+            for (int j{}; j < cols_; ++j)
+                if ( !(this[i][j] <= other[i][j]) )
+                    return false;
+    }
+    return true;
+}
+
+template<typename T>
+bool GenericMatrix<T>::empty()
+{
+    return matrix_.empty();
+}
+
+template<typename T>
+size_t GenericMatrix<T>::getRows()
+{
+    return rows_;
+}
+
+template<typename T>
+size_t GenericMatrix<T>::getCols()
+{
+    return cols_;
+}
+
+template<typename T>
+template<typename U>
+bool GenericMatrix<T>::equalLength(GenericMatrix<U> &other)
+{
+    if (matrix_.size() != other.size())
+        throw std::runtime_error("Other row size is not equal to this row size");
+
+    for(const auto &col : other)
+    {
+        if (col.size() != cols_)
+            throw std::runtime_error("Other col size is not equal ot this col size");
+    }
+    return true;
+}
+
